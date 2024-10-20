@@ -1,0 +1,23 @@
+<app-top-bar #topBarRef [productListDetails]="selectedListDetails"
+    (ProductDeleteDetails)="ProductDeleteDetails($event)">
+</app-top-bar>
+
+<div *ngIf="productListDetails && productListDetails.length > 0; else noProducts" class="product-grid">
+    <div *ngFor="let product of productListDetails" class="product-card">
+        <div class="product-content" (click)="goToProductDetails(product.id)">
+            <img [src]="product.image" alt="{{ product.title }}" class="product-image">
+            <h3>{{ product.title }}</h3>
+            <h5>Price: ${{ product.price }}</h5>
+            <p>Category: {{ product.category }}</p>
+            <p>Rating: {{ product.rating.rate }} ({{ product.rating.count }} reviews)</p>
+        </div>
+        <div class="add-or-edit-container">
+            <app-add-or-edit #addOrEdit [productDataSource]="product" (productCount)="countValueChange($event)">
+            </app-add-or-edit>
+        </div>
+    </div>
+</div>
+
+<ng-template #noProducts>
+    <p>No products available.</p>
+</ng-template>

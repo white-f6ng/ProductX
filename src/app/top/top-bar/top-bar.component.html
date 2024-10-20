@@ -1,0 +1,66 @@
+<a>
+    <h1>Product X</h1>
+</a>
+
+<div class="button-container">
+    <button class="button fancy-button" (click)="onCheckOut()">
+        <i class="fa-solid fa-cart-shopping"></i> Checkout
+    </button>
+</div>
+
+<ng-template #checkOutRef>
+    <h2>Product Grid</h2>
+    <div class="dialog-content" *ngIf="!submitTriggered && !eventTrigger">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Order</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="iscontentAvailable">
+                <tr *ngFor="let product of productListDetails">
+                    <td>
+                        <img [src]="product.image" alt="{{ product.title }}" class="product-image">
+                    </td>
+                    <td>{{ product.title }}</td>
+                    <td>{{ product.Count }}</td>
+                    <td>${{ product.TotalCost }}</td>
+                    <td>
+                        <input type="checkbox" [disabled]="product.isSelected" [checked]="product.isSelected"
+                            (change)="onSelect(product)">
+                    </td>
+                    <td>
+                        <button class="fa-solid fa-trash" [disabled]="product.isOrdered"
+                            (click)="deleteProduct(product)"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="checkout-footer" *ngIf="isBuyTriggered">
+        <input type="number" readonly="true" [value]="TotalPrice" style="width: 100px;" class="price-input">
+        <button (click)="Onsubmit()" class="button fancy-button">Buy</button>
+    </div>
+    <div class="message-container" >
+        <div *ngIf="!submitTriggered" class="message-content">
+            {{messageContent}}
+        </div>
+    </div>
+    <button class="button fancy-button close-button" (click)="onClose()">Close</button>
+</ng-template>
+
+<div *ngIf="isDialogOpen" class="dialog-overlay" (click)="onClose()"></div>
+<div *ngIf="isDialogOpen" class="dialog" (click)="$event.stopPropagation()">
+    <ng-container *ngTemplateOutlet="checkOutRef"></ng-container>
+</div>
+
+<ng-template #successRef>
+    <input type="number" readonly="true" [value]="TotalPrice" style="width: 100px;">
+    <button (click)="Onsubmit()" class="button fancy-button">Buy</button>
+</ng-template>

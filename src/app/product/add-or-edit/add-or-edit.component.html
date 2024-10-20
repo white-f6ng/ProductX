@@ -1,0 +1,37 @@
+<ng-template #buyRef>
+    <div *ngIf="canShowEnabled" class="button-container">
+        <button class="fa-solid fa-bag-shopping" (click)="onSubmit()"> Buy</button>
+    </div>
+</ng-template>
+
+<ng-template #incDecRef>
+    <div class="button-container" *ngIf="isAddToCartClicked; else isClicked">
+        <button (click)="decrementClick()" class="fa-solid fa-minus"></button>
+        <span class="count-display">{{ count }}</span>
+        <button (click)="incrementClick()" class="fa-solid fa-plus"></button>
+
+        <div *ngIf="!notSelected; else notAdded">
+            <button (click)="addToCart($event)">Add to cart</button>
+        </div>
+
+        <button (click)="cancel()">Cancel</button>
+    </div>
+</ng-template>
+
+<ng-container *ngIf="isBuy; else incDecRef">
+    <ng-container *ngTemplateOutlet="buyRef"></ng-container>
+</ng-container>
+
+<ng-template #isClicked>
+    <div class="message-content">
+        <i class="fa-solid fa-check"></i>
+        <span>{{ messageContent }}</span>
+    </div>
+</ng-template>
+
+<ng-template #notAdded>
+    <div class="message-content">
+        <i class="fa-solid fa-xmark"></i>
+        <span>{{ messageContent }}</span>
+    </div>
+</ng-template>
